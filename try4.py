@@ -13,19 +13,14 @@ cap = cv2.VideoCapture('C:/Users/diada/Downloads/blink.avi')
 #fourcc = cv2.VideoWriter_fourcc(*'XVID')
 #out = cv2.VideoWriter('C:/Users/diada/Downloads/Copy of 1_blink.avi', fourcc, 80.0, (640,480))
 frames=[]
-eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+
 
 for i in range(int(cap.get(cv2.CAP_PROP_FRAME_COUNT))):
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
-    for (x,y,w,h) in eyes:
-        cv2.rectangle(frame, (x,y), (x+w, y+h), (255,0,0), 2)
-        roi_gray = gray[y:y+h, x:x+w]
-        roi_color =frame[y:y+h, x:x+w]
     frames.append(gray)
     cv2.imshow('frame', frame)
-    time.sleep(.25)
+    time.sleep(.05)
     if cv2.waitKey(1) & 0xFF ==ord('q'):
         break
 
@@ -41,17 +36,14 @@ for i in range(1,len(frames)-1):
     ret,otsu = cv2.threshold(gray, 125, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
     laplacian = cv2.Laplacian(gray, cv2.CV_64F)
     edges = cv2.Canny(gray, 50, 10)
-    eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
-    for (x,y,w,h) in eyes:
-        cv2.rectangle(frame, (x,y), (x+w, y+h), (255,0,0), 2)
-        roi_gray = gray[y:y+h, x:x+w]
-        roi_color =frame[y:y+h, x:x+w]
-    #cv2.imshow('thresh1', thresh1)
-    #cv2.imshow('gaus', gaus)
-    #cv2.imshow('otsu', otsu)
-    #cv2.imshow('laplacian', laplacian)
+    
+    cv2.imshow('thresh1', thresh1)
+    cv2.imshow('gaus', gaus)
+    cv2.imshow('otsu', otsu)
+    cv2.imshow('laplacian', laplacian)
     cv2.imshow('edges', edges)
     cv2.imshow('gray', gray)
+    
     time.sleep(.25)
     if cv2.waitKey(1) & 0xFF ==ord('q'):
         break
